@@ -27,8 +27,11 @@
 -->
 <script>
   "use strict";
-
-  // Здесь пишем решение, данный комментарий необходимо стереть.
+  var userNumber = +prompt("Введите число, которое необходимо определить разряды:");
+  var remainderDivision = userNumber;
+  document.writeln(`Колличество сотен в числе = ${Math.trunc(userNumber / 100)}`);
+  document.write(`Колличество десятков в числе = ${Math.trunc(userNumber / 10)} `);
+  document.write(`Колличество единиц в числе = ${Math.trunc(userNumber / 1)} `);  
 </script>
 </body>
 </html>

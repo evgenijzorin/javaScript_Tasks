@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Homework</title>
+</head>
+<body>
+<!--
+Обязательное задание.
+
+Необходимо данное задание выполнить в es5 стиле и в es6 стиле.
+Необходимо создать функцию-конструктор/класс для поста в социальной сети.
+Названия: `PostES5` для es5 стиля и `PostES6` для es6 стиля.
+Пост должен хранить:
+1. Автора поста (имени достаточно).
+2. Текст поста.
+3. Дату и время последнего изменения поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Каждому экземпляру объекта должен быть доступен метод `edit`, который будет
+менять текст поста.
+
+---
+
+Необходимо создать функцию-конструктор/класс для закрепленного поста в
+социальной сети.
+Названия: `AttachedPostES5` для es5 стиля и `AttachedPostES6` для es6 стиля.
+Закрепленный пост должен наследоваться от обычного поста.
+Данные автора поста и текст поста необходимо передавать при создании
+экземпляра объекта.
+Закрепленный пост должен иметь свойство `highlighted`, в котором по умолчанию
+будет лежать значение false (это свойство будет обозначать, будет ли наш
+закрепленный пост подсвечен).
+У экземпляров объекта закрепленного поста должен быть метод с названием
+`makeTextHighlighted`, который сделает так, чтобы наш пост стал подсвеченным
+(будет менять свойство `highlighted`).
+
+---
+
+Подсказки:
+1. Задание сложное, советую делать по аналогии с примером на онлайн-занятии.
+2. Обратите внимание что пост хранит "дату и время последнего изменения
+поста", это значит что если пост кто-то изменит (например вызовет какой-то
+метод, который изменит что-то в посте), дата и время последнего изменения
+поста также должна измениться.
+3. Выполняйте все по порядку, не стоит пытаться сделать все сразу, иначе можно
+что-нибудь пропустить.
+4. Если непонятно условие - задайте вопрос.
+-->
+<script>
+  "use strict";
+  // Часть 1. создание поста:
+  // ES5 стиль
+  function PostES5(author, text) {
+    // Свойства
+    this.author = author;
+    this.text = text;        
+    this.DateOfPost = new Date(); 
+  }
+  PostES5.prototype.editPost = function(text) {
+    this.text = text;// изменить текст поста    
+    this.DateOfPost = new Date();// обновить дату
+  }
+
+  // проверка
+  console.log(`ES5 стиль`);
+  const postES5 = new PostES5('Николай', 'политическое заявление');
+  console.log(`Пользователь ${postES5.author} разместил: ${postES5.text}`);
+  postES5.editPost('новое видение ситуации');
+  console.log(`Пользователь ${postES5.author} разместил: ${postES5.text}`);
+   
+  // ES6 стиль
+  class PostES6 {
+    constructor (author, text){
+      this.author = author;
+      this.text = text;   
+      this.DateOfPost = new Date();   
+    }
+    editPost (text){
+      this.text = text; 
+      this.DateOfPost = new Date();// обновить дату
+    }
+  }
+
+    // проверка  
+  console.log(`ES6 стиль`);
+  const postES6 = new PostES6('Андрей', 'мнение');
+  console.log(`Пользователь ${postES6.author} разместил: ${postES6.text}`);
+  postES6.editPost('сдержался');
+  console.log(`Пользователь ${postES6.author} разместил: ${postES6.text}`);
+   
+  // Часть 2. создание Создание закрепленного поста.
+  // ES5 стиль
+  // функция конструктор объекта закрепленного поста
+  function AttachedPostES5 (author, text){
+    // Наследование от PostES5:
+    PostES5.call(this, author, text); // создать объект наследника конструктором PostES5
+    // Добавить новое свойство подсветки к объекту
+    this.highlighted = false; // свойство подсветки текста
+  }
+  // создать новый прототип объекта используя прототип PostES5
+  AttachedPostES5.prototype = Object.create(PostES5.prototype);
+  // создать конструктор прототипа
+  AttachedPostES5.prototype.constructor = AttachedPostES5;
+  // Добавить метод включения подсветки
+  AttachedPostES5.prototype.makeTextHighlighted = function() {
+    this.highlighted = true;
+    // обновить дату
+    this.DateOfPost = new Date();
+  };
+      
+  // проверка      
+  console.log(`ES5 стиль, Закрепленный пост:`);
+  const attachedPostES5 = new AttachedPostES5('Михаил', 'Записи Михаила');  
+  console.log(`Пользователь ${attachedPostES5.author} разместил: ${attachedPostES5.text} подсветка поста: ${attachedPostES5.highlighted} `);
+  attachedPostES5.makeTextHighlighted();
+  console.log(`Пользователь ${attachedPostES5.author} разместил: ${attachedPostES5.text} подсветка поста: ${attachedPostES5.highlighted} `);
+  
+  // ES6 стиль
+  class AttachedPostES6 extends /*ключевое слово наследования*/ PostES6{      
+    // Добавить новое свойство подсветки к объекту
+    highlighted = false; // свойство подсветки текста
+    // без явного указания конструктора, в качестве конструктора используется конструктор базового класса
+    // Метод подсветки
+    makeTextHighlighted() {
+      this.highlighted = true;
+      this.DateOfPost = new Date();       
+    }    
+  }
+  // проверка  
+  console.log(`ES6 стиль, Закрепленный пост:`);  
+  const attachedPostES6 = new AttachedPostES6('дочьКапитана', 'Запись дневника');
+  console.log(`Пользователь ${attachedPostES6.author} разместил: ${attachedPostES6.text} подсветка поста: ${attachedPostES6.highlighted} `);
+  attachedPostES6.makeTextHighlighted();
+  attachedPostES6.editPost('смеркалось...');
+  console.log(`Пользователь ${attachedPostES6.author} разместил: ${attachedPostES6.text} подсветка поста: ${attachedPostES6.highlighted} `);
+</script>
+</body>
+</html>

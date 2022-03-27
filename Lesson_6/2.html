@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Homework</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"> <!-- ссылка на анимированые стили -->
   <style>
     .message {
       width: 150px;
@@ -28,7 +28,7 @@
 <input id="from" type="text">
 В инпуте написано: <span></span>
 
-<br>
+<br><!-- Перенос на следующую строку -->
 
 <button class="messageBtn">Показать блок</button>
 <div class="message">
@@ -54,7 +54,8 @@
   </label>
   <br>
   <br>
-  <button>Отправить</button>
+  <button type="submit">Отправить</button>
+  <button type="reset">не отправлять</button>
 </form>
 
 <script>
@@ -65,7 +66,11 @@
   должно моментально отображаться в span. То есть при печати в input'е тег span
   также должен меняться.
   */
-
+ const spanElement = document.querySelector('span'); 
+ document.querySelector('input') // ссылка на первый input
+  .addEventListener('input', e => { // задать событие ввода
+   spanElement.textContent = e.target.value; /*target - ссылка на объект которому было направленно событие*/                                 
+  });
 
   /*
   2. При клике на кнопку с классом messageBtn необходимо элементу с классом
@@ -73,8 +78,13 @@
   1) добавить два класса: animate__animated и animate__fadeInLeftBig
   2) поставить данному элементу стиль visibility в значение 'visible'.
    */
-
-
+  const messageBtn = document.querySelector('.messageBtn');
+  const message =document.querySelector('.message');
+  messageBtn.addEventListener('click', e => {
+    message.style.visibility = 'visible'; /*изменить атрибут видимости*/
+    message.classList.add('animate__animated', 'animate__fadeInLeftBig'); /*добавить классы анимации*/
+  });
+  
   /*
   3. Необходимо при отправке формы проверить, заполнены ли все поля в этой
   форме. Если какое-либо поле не заполнено, форма не должна отправляться, также
@@ -86,7 +96,29 @@
   данному полю).
   Если поле было чем-либо заполнено, подсветку (класс error) необходимо убрать.
    */
-
+  const formElement = document.querySelector('form'); /*найти поле Form*/
+  const controlsElements = formElement.querySelectorAll('input, select');  /*найти поля input select - заполняемые поля*/
+  /*Событие нажатия клавиши отправить (с типом submit)*/
+  formElement.addEventListener('submit', event => {
+    controlsElements.forEach(formControlEl => {
+      if (formControlEl.value === '') {
+        formControlEl.classList.add('error');
+        event.preventDefault(); /*Не выполнять события по умолч.*/
+      }
+    });
+  });
+  /*Событие нажатия с клавиатур eter в поле заполнения*/
+  formElement.addEventListener('input', event => {
+    controlsElements.forEach(formControlEl => {
+      if (formControlEl.value === '') {
+        formControlEl.classList.add('error');        
+        event.preventDefault(); /*Не выполнять события по умолч.*/
+      }else{
+        formControlEl.classList.remove('error');        
+        event.preventDefault(); /*Не выполнять события по умолч.*/
+      };
+    });
+  });
 
 </script>
 </body>
